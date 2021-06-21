@@ -28,8 +28,9 @@
     {#each messages as message, index (index)}
       <li class:me={isMe(message.name)}>
         <span style="color: {message.color}"
-          >{isMe(message.name) ? "[You] " : ""}{message.name}:</span
+          >{isMe(message.name) ? "[You] " : ""}{message.name}</span
         >
+        <span>:</span>
         {message.message}
       </li>
     {/each}
@@ -70,17 +71,18 @@
 
   ul li {
     margin-bottom: 8px;
+    font-size: 14px;
   }
 
-  ul li.me span {
+  ul li.me span:first-child {
+    font-weight: bold;
     padding-left: 5px;
     padding-right: 5px;
     background: #fff;
   }
 
-  ul li span {
-    font-weight: bold;
-    margin-right: 15px;
+  ul li span:last-child {
+    margin-right: 5px;
   }
 
   form {

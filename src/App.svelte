@@ -95,7 +95,6 @@
         .then((data) => data.json())
         .then((response) => {
           state.user = response.data[0];
-          console.log(response.data[0]);
         })
         .catch((error) => console.error(error));
     }
@@ -131,7 +130,8 @@
   };
 
   const onMessageSubmit = () => {
-    if (!socket || !state.chatMessage || !state.user) return;
+    if (!socket || !state.chatMessage || !state.user || !state.lastChannel)
+      return;
 
     socket.send(`PRIVMSG #${state.lastChannel} :${state.chatMessage}`);
 
