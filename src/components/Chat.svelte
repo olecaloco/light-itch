@@ -37,7 +37,7 @@
 
   {#if !user}
     <a
-      href="https://id.twitch.tv/oauth2/authorize?client_id=rlyyav6daabm5yx0d5mtoxh9f6xx6k&redirect_uri=http://localhost:5000&scope=chat:read+chat:edit&response_type=token"
+      href="https://id.twitch.tv/oauth2/authorize?client_id=rlyyav6daabm5yx0d5mtoxh9f6xx6k&redirect_uri=https://light-itch.onrender.com&scope=chat:read+chat:edit&response_type=token"
       >Login to Chat</a
     >
   {:else}
