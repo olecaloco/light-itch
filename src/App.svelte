@@ -133,7 +133,7 @@
   const onMessageSubmit = () => {
     if (!socket || !state.chatMessage || !state.user) return;
 
-    socket.send(`PRIVMSG #${state.channel} :${state.chatMessage}`);
+    socket.send(`PRIVMSG #${state.lastChannel} :${state.chatMessage}`);
 
     state.messages = [
       ...state.messages,
