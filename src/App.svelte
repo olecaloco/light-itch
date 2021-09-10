@@ -20,15 +20,14 @@
   const onSocketOpen = () => {
     if (!socket) return;
 
-    const token =
-      localStorage.getItem("token") || "4tsb6t6e3dvndjciewqvkfjvh9vpr8";
-    let username = "botleca";
+    const token = localStorage.getItem("token");
+    let username = "justinfan0000";
 
     if (state.user) {
       username = state.user.login;
+      socket.send(`PASS oauth:${token}`);
     }
 
-    socket.send(`PASS oauth:${token}`);
     socket.send(`NICK ${username}`);
     socket.send("CAP REQ :twitch.tv/tags");
   };
