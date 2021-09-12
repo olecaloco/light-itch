@@ -51,11 +51,12 @@
 
 <style>
   aside {
+    flex: 0 0 340px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 15px;
-    width: 380px;
+    width: 340px;
     height: 100%;
     border-left: 1px solid rgba(255, 255, 255, 0.05);
   }
