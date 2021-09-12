@@ -27,9 +27,9 @@
   <ul bind:this={chat}>
     {#each messages as message, index (index)}
       <li class:me={isMe(message.name)}>
-        <span style="color: {message.color}"
-          >{isMe(message.name) ? "[You] " : ""}{message.name}</span
-        >
+        <strong style="color: {message.color}"
+          >{isMe(message.name) ? "[You] " : ""}{message.name}
+        </strong>
         <span>:</span>
         {message.message}
       </li>
@@ -70,8 +70,9 @@
   }
 
   ul li {
-    margin-bottom: 8px;
-    font-size: 14px;
+    margin-bottom: 5px;
+    font-size: 13px;
+    line-height: 1.5;
   }
 
   ul li.me span:first-child {
