@@ -111,8 +111,7 @@
       socket.send(`JOIN #${state.channel}`);
     }
 
-    // state.playerSource = `https://player.twitch.tv/?channel=${state.channel}&parent=light-itch.onrender.com`;
-    state.playerSource = `https://player.twitch.tv/?channel=${state.channel}&parent=localhost`;
+    state.playerSource = `https://player.twitch.tv/?channel=${state.channel}&parent=light-itch.onrender.com`;
     state.lastChannel = state.channel;
     state.channel = "";
   };
