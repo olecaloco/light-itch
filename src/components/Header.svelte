@@ -2,6 +2,9 @@
   import { createEventDispatcher } from "svelte";
 
   export let channel = "";
+  export let hiddenChat;
+
+  $: label = hiddenChat ? "Show Chat" : "Hide Chat";
 
   const dispatch = createEventDispatcher();
 
@@ -20,7 +23,7 @@
     />
     <button type="submit">Submit</button>
   </form>
-  <button on:click={toggle}>Show Chat</button>
+  <button on:click={toggle}>{label}</button>
 </nav>
 
 <style>

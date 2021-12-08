@@ -1,68 +1,109 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  import { afterUpdate } from "svelte";
+  import interactjs from "interactjs";
+  import { afterUpdate, onDestroy } from "svelte";
 
   export let messages;
-  export let user;
-  export let value = "";
-  const dispatch = createEventDispatcher();
   let chat;
+  let wrapper;
+  let floating = false;
+
+  $: floatLabel = floating ? "Unfloat" : "Float";
+
+  onDestroy(() => {
+    if (floating) {
+      interactjs('#chat').unset();
+    }
+  })
 
   afterUpdate(() => {
     chat.scrollTop = chat.scrollHeight - chat.clientHeight;
   });
 
-  const submit = () => dispatch("submit");
+  const initializeFloatingChat = () => {
+    floating = true;
+    const position = { x: 0, y: 0 };
 
-  const isMe = (name) => {
-    if (user) {
-      return name === user.display_name;
+    interactjs("#chat").draggable({
+      listeners: {
+        move(event) {
+          position.x += event.dx;
+          position.y += event.dy;
+
+          event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+        },
+      },
+    });
+  };
+
+  const toggleMode = () => {
+    if (floating) {
+      interactjs("#chat").unset();
+      wrapper.style.transform = "initial";
+      floating = false;
+      return;
     }
 
-    return false;
+    initializeFloatingChat();
   };
 </script>
 
-<aside>
+<aside class:floating id="chat" bind:this={wrapper}>
+  <button on:click={toggleMode}>{floatLabel}</button>
   <ul bind:this={chat}>
     {#each messages as message, index (index)}
-      <li class:me={isMe(message.name)}>
-        <strong style="color: {message.color}"
-          >{isMe(message.name) ? "[You] " : ""}{message.name}
-        </strong>
+      <li>
+        <strong style="color: {message.color}">{message.name}</strong>
         <span>:</span>
         {message.message}
       </li>
     {/each}
   </ul>
-
-  {#if !user}
-    <a
-      href="https://id.twitch.tv/oauth2/authorize?client_id=rlyyav6daabm5yx0d5mtoxh9f6xx6k&redirect_uri=https://light-itch.onrender.com&scope=chat:read+chat:edit&response_type=token"
-      >Login to Chat</a
-    >
-  {:else}
-    <form on:submit|preventDefault={submit}>
-      <input type="text" bind:value placeholder="Chat message" required />
-      <button type="submit">Send</button>
-    </form>
-  {/if}
 </aside>
 
 <style>
-  aside {
+  #chat {
+    position: relative;
     flex: 0 0 340px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     padding: 15px;
     width: 340px;
     height: 100%;
     border-left: 1px solid rgba(255, 255, 255, 0.05);
   }
 
+  #chat.floating {
+    position: fixed;
+    top: 90px;
+    right: 0;
+    height: 300px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  #chat button {
+    position: absolute;
+    right: 100%;
+    margin-right: 10px;
+    color: #00aeff;
+    border: none;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.5);
+    cursor: pointer;
+  }
+
+  #chat button:hover {
+    background: #fff;
+  }
+
+  #chat.floating button {
+    bottom: 100%;
+    right: 0;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
   ul {
     margin-top: 0;
+    margin-bottom: 0;
     padding-left: 0;
     width: 100%;
     height: 100%;
@@ -76,48 +117,11 @@
     line-height: 1.5;
   }
 
-  ul li.me span:first-child {
-    font-weight: bold;
-    padding-left: 5px;
-    padding-right: 5px;
-    background: #fff;
+  ul li:last-child {
+    margin-bottom: 0;
   }
 
   ul li span:last-child {
     margin-right: 5px;
-  }
-
-  form {
-    display: flex;
-    align-items: center;
-  }
-
-  input {
-    flex: 1 1 100%;
-    max-width: 100%;
-    height: 35px;
-    padding: 5px 10px;
-    color: #fff;
-    border-radius: 25px;
-    border: 0;
-    background: #0e0e10;
-    outline: none;
-  }
-
-  button {
-    margin-left: 10px;
-    padding: 7px 10px;
-    background: white;
-    color: black;
-    border: 1px solid #fff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  a {
-    display: block;
-    text-align: center;
-    color: #fff;
-    text-decoration: none;
   }
 </style>
