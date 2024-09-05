@@ -67,10 +67,11 @@
       socket.send(`JOIN #${state.channel}`);
     }
 
-    const { hostname } = window.location; // localhost || light-itch.onrender.com
+    const { hostname } = window.location;
     state.playerSource = `https://player.twitch.tv/?channel=${state.channel}&parent=${hostname}`;
     state.lastChannel = state.channel;
-    state.channel = "";
+
+    document.title = `Light Itch - ${state.channel}`;
   };
 
   const onToggle = () => {

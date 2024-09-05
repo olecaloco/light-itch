@@ -48,7 +48,7 @@
 </script>
 
 <aside class:floating id="chat" bind:this={wrapper}>
-  <button on:click={toggleMode}>{floatLabel}</button>
+  <button on:click={toggleMode} type="button">{floatLabel}</button>
   <ul bind:this={chat}>
     {#each messages as message, index (index)}
       <li>
@@ -80,8 +80,9 @@
   }
 
   #chat button {
-    position: absolute;
-    right: 100%;
+    display: block;
+    margin-bottom: 0.75rem;
+    margin-left: auto;
     margin-right: 10px;
     color: #00aeff;
     border: none;
@@ -95,10 +96,15 @@
   }
 
   #chat.floating button {
+    visibility: hidden;
     bottom: 100%;
     right: 0;
     margin-right: 0;
     margin-bottom: 10px;
+  }
+
+  #chat.floating:hover button {
+    visibility: visible;
   }
 
   ul {
@@ -106,7 +112,7 @@
     margin-bottom: 0;
     padding-left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 17px);
     list-style: none;
     overflow: hidden;
   }
