@@ -15,7 +15,7 @@
       <li>
         <strong style="color: {message.color}">{message.name}</strong>
         <span>:</span>
-        {message.message}
+        <span class="message">{message.message}</span>
       </li>
     {/each}
   </ul>
@@ -58,6 +58,10 @@
 
   ul li span:last-child {
     margin-right: 5px;
+  }
+
+  ul li span.message {
+    color: #fff;
   }
 
   @media screen and (max-width: 960px) {
