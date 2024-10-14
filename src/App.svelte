@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount } from "svelte/internal";
   import { determineTags, getMessage } from "./helpers";
 
   import Chat from "./components/Chat.svelte";
@@ -7,6 +7,7 @@
   import Preview from "./components/Preview.svelte";
 
   let socket = null;
+
   const state = {
     channel: null,
     chatMessage: "",
@@ -15,6 +16,15 @@
     playerSource: null,
     messages: [],
   };
+  
+  const search = window.location.search;
+  const params = new URLSearchParams(search);
+  const channel = params.get('channel');
+
+  if (channel) {
+    state.channel = channel;
+  }
+
 
   const onSocketOpen = () => {
     if (!socket) return;
@@ -53,10 +63,14 @@
     }
   };
 
-  onMount(async () => {
+  onMount(() => {
     socket = new WebSocket("wss://irc-ws.chat.twitch.tv:443", "irc");
     socket.onopen = onSocketOpen;
     socket.onmessage = onSocketMessage;
+
+    if (state.channel) {
+      onSubmit();
+    }
   });
 
   const onSubmit = () => {
@@ -66,6 +80,11 @@
       if (state.lastChannel) socket.send(`PART #${state.lastChannel}`);
       socket.send(`JOIN #${state.channel}`);
     }
+
+    // Push the state to history
+    const url = new URL(window.location.href);
+    url.searchParams.set('channel', state.channel);
+    window.history.pushState({}, `Light Itch - ${state.channel}`, url.toString());
 
     const { hostname } = window.location;
     state.playerSource = `https://player.twitch.tv/?channel=${state.channel}&parent=${hostname}`;
@@ -77,6 +96,7 @@
   const onToggle = () => {
     state.hiddenChat = !state.hiddenChat;
 
+    if (!socket) return;
     if (!state.playerSource) return;
 
     if (!state.hiddenChat && state.lastChannel)
@@ -107,5 +127,11 @@
     display: flex;
     color: #fff;
     height: calc(100vh - 60px);
+  }
+
+  @media screen and (max-width: 960px) {
+    .container {
+      flex-direction: column;
+    }
   }
 </style>

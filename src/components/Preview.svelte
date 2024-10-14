@@ -5,8 +5,7 @@
 {#if !source}
   <div>
     <h4>
-      Get started by typing the username of your twitch streamer in the field
-      above. It can be found on the url e.g. "twitch.tv/forsen"
+      Get started by typing the username of your twitch streamer in the input field above.
     </h4>
   </div>
 {:else}

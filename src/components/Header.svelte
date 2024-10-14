@@ -16,7 +16,7 @@
   <form on:submit|preventDefault={submit}>
     <input
       name="channel"
-      type="text"
+      type="search"
       required
       placeholder="Enter channel name"
       bind:value={channel}

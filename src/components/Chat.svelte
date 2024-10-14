@@ -1,54 +1,16 @@
 <script>
-  import interactjs from "interactjs";
-  import { afterUpdate, onDestroy } from "svelte";
+  import { afterUpdate } from "svelte/internal";
 
   export let messages;
   let chat;
   let wrapper;
-  let floating = false;
-
-  $: floatLabel = floating ? "Unfloat" : "Float";
-
-  onDestroy(() => {
-    if (floating) {
-      interactjs('#chat').unset();
-    }
-  })
 
   afterUpdate(() => {
     chat.scrollTop = chat.scrollHeight - chat.clientHeight;
   });
-
-  const initializeFloatingChat = () => {
-    floating = true;
-    const position = { x: 0, y: 0 };
-
-    interactjs("#chat").draggable({
-      listeners: {
-        move(event) {
-          position.x += event.dx;
-          position.y += event.dy;
-
-          event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-        },
-      },
-    });
-  };
-
-  const toggleMode = () => {
-    if (floating) {
-      interactjs("#chat").unset();
-      wrapper.style.transform = "initial";
-      floating = false;
-      return;
-    }
-
-    initializeFloatingChat();
-  };
 </script>
 
-<aside class:floating id="chat" bind:this={wrapper}>
-  <button on:click={toggleMode} type="button">{floatLabel}</button>
+<aside id="chat" bind:this={wrapper}>
   <ul bind:this={chat}>
     {#each messages as message, index (index)}
       <li>
@@ -70,43 +32,6 @@
     border-left: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  #chat.floating {
-    position: fixed;
-    top: 90px;
-    right: 0;
-    height: 300px;
-    border-radius: 4px;
-    background: rgba(0, 0, 0, 0.5);
-  }
-
-  #chat button {
-    display: block;
-    margin-bottom: 0.75rem;
-    margin-left: auto;
-    margin-right: 10px;
-    color: #00aeff;
-    border: none;
-    border-radius: 4px;
-    background: rgba(0,0,0,0.5);
-    cursor: pointer;
-  }
-
-  #chat button:hover {
-    background: #fff;
-  }
-
-  #chat.floating button {
-    visibility: hidden;
-    bottom: 100%;
-    right: 0;
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-
-  #chat.floating:hover button {
-    visibility: visible;
-  }
-
   ul {
     margin-top: 0;
     margin-bottom: 0;
@@ -119,7 +44,7 @@
 
   ul li {
     margin-bottom: 5px;
-    font-size: 13px;
+    font-size: 0.75rem;
     line-height: 1.5;
   }
 
@@ -129,5 +54,11 @@
 
   ul li span:last-child {
     margin-right: 5px;
+  }
+
+  @media screen and (max-width: 960px) {
+    #chat {
+      max-height: 500px;
+    }
   }
 </style>
