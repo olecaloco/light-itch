@@ -52,6 +52,7 @@
     background: #0e0e10;
     outline: none;
     text-transform: lowercase;
+    font-size: 1rem;
   }
 
   form button {
