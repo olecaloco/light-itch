@@ -14,14 +14,18 @@ export function determineTags(tagsString) {
   return tags;
 }
 
+/**
+ * 
+ * @param {string} channel Channel Name
+ * @param {string} infoString IRC info string
+ * @returns {string} Splitted Message
+ */
 export function getMessage(channel, infoString) {
   if (!channel) return;
 
-  let [, message] = infoString.split(`PRIVMSG #${channel} :`);
+  let [, message] = infoString.split(`PRIVMSG #${channel.toLowerCase()} :`);
 
-  return infoString;
+  if (!message) return "";  
 
-  // if (!message) return "";  
-
-  // return message;
+  return message;
 }
