@@ -3,14 +3,13 @@
 
   export let messages;
   let chat;
-  let wrapper;
 
   afterUpdate(() => {
-    chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+    chat.scrollTop = chat.scrollHeight;
   });
 </script>
 
-<aside id="chat" bind:this={wrapper}>
+<aside id="chat">
   <ul bind:this={chat}>
     {#each messages as message, index (index)}
       <li>
@@ -27,25 +26,30 @@
     position: relative;
     flex: 0 0 340px;
     padding: 15px;
-    width: 340px;
+    max-width: 340px;
+    width: 100%;
     height: 100%;
     border-left: 1px solid rgba(255, 255, 255, 0.05);
+    overflow-y: hidden;
   }
 
   ul {
+    display: flex;
+    flex-direction: column;
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 0;
     width: 100%;
     height: calc(100% - 17px);
     list-style: none;
-    overflow: hidden;
+    overflow-y: hidden;
   }
 
   ul li {
     margin-bottom: 5px;
     font-size: 0.75rem;
     line-height: 1.5;
+    overflow-wrap: anywhere;
   }
 
   ul li:last-child {
@@ -58,7 +62,18 @@
 
   @media screen and (max-width: 960px) {
     #chat {
-      max-height: 500px;
+      flex: 1 1 0;
+      max-width: 100%;
+    }
+
+    #chat ul {
+      height: 100%;
+    }
+  }
+
+  @media screen and (max-height: 320px) {
+    #chat {
+      display: none;
     }
   }
 </style>

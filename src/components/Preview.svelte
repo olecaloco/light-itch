@@ -1,5 +1,6 @@
 <script>
   export let source;
+  export let hiddenChat;
 </script>
 
 {#if !source}
@@ -10,6 +11,7 @@
   </div>
 {:else}
   <iframe
+    class:full={hiddenChat}
     src={source}
     scrolling="no"
     frameborder="0"
@@ -37,5 +39,17 @@
   iframe {
     flex: 1 1 0%;
     height: 100%;
+  }
+
+  @media screen and (max-width: 960px) {
+    iframe {
+      flex: initial;
+      height: initial;
+      aspect-ratio: 16/9;
+    }
+
+    iframe.full {
+      height: 100%;
+    }
   }
 </style>

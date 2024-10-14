@@ -115,7 +115,7 @@
     hiddenChat={state.hiddenChat}
   />
   <section class="container">
-    <Preview source={state.playerSource} />
+    <Preview source={state.playerSource} hiddenChat={state.hiddenChat} />
     {#if !state.hiddenChat}
       <Chat messages={state.messages} />
     {/if}
