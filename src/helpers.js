@@ -19,7 +19,9 @@ export function getMessage(channel, infoString) {
 
   let [, message] = infoString.split(`PRIVMSG #${channel} :`);
 
-  if (!message) return "";  
+  return infoString;
 
-  return message;
+  // if (!message) return "";  
+
+  // return message;
 }
