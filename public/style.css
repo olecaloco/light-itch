@@ -9,7 +9,6 @@ html {
   padding: 0;
   margin: 0;
   background-color: #18181b;
-  height: 100dvh;
 }
 
 body {
@@ -18,5 +17,7 @@ body {
 }
 
 .app {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
 }

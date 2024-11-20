@@ -68,6 +68,8 @@
     #chat {
       flex: 1 1 0;
       max-width: 100%;
+      border-left: 0;
+      padding: 8px;
     }
 
     #chat ul {

@@ -42,7 +42,7 @@
       const tags = determineTags(tagsString);
       const message = getMessage(state.lastChannel, infoString);
 
-      if (state.messages.length === 100) {
+      if (state.messages.length === 50) {
         state.messages = state.messages.filter((m, i) =>
           i === 0 ? false : true
         );
@@ -126,7 +126,7 @@
   .container {
     display: flex;
     color: #fff;
-    height: calc(100vh - 60px);
+    flex: 1 1 0;
   }
 
   @media screen and (max-width: 960px) {
