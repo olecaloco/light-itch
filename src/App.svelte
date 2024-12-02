@@ -10,21 +10,19 @@
 
   const state = {
     channel: null,
-    chatMessage: "",
     lastChannel: null,
     hiddenChat: true,
     playerSource: null,
     messages: [],
   };
   
-  const search = window.location.search;
+  const { search } = window.location;
   const params = new URLSearchParams(search);
   const channel = params.get('channel');
 
   if (channel) {
     state.channel = channel;
   }
-
 
   const onSocketOpen = () => {
     if (!socket) return;
@@ -66,12 +64,21 @@
   onMount(() => {
     socket = new WebSocket("wss://irc-ws.chat.twitch.tv:443", "irc");
     socket.onopen = onSocketOpen;
-    socket.onmessage = onSocketMessage;
+    socket.onmessage = onSocketMessage;    
 
-    if (state.channel) {
-      onSubmit();
-    }
+    if (state.channel) onSubmit();
   });
+
+  const pushToHistory = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('channel', state.channel);
+    window.history.pushState({}, `Light Itch - ${state.channel}`, url.toString());
+  }
+
+  const updatePlayerSource = () => {
+    const { hostname } = window.location;
+    state.playerSource = `https://player.twitch.tv/?channel=${state.channel}&parent=${hostname}`;
+  }
 
   const onSubmit = () => {
     if (!state.channel) return;
@@ -81,13 +88,9 @@
       socket.send(`JOIN #${state.channel}`);
     }
 
-    // Push the state to history
-    const url = new URL(window.location.href);
-    url.searchParams.set('channel', state.channel);
-    window.history.pushState({}, `Light Itch - ${state.channel}`, url.toString());
-
-    const { hostname } = window.location;
-    state.playerSource = `https://player.twitch.tv/?channel=${state.channel}&parent=${hostname}`;
+    pushToHistory();
+    updatePlayerSource();
+    
     state.lastChannel = state.channel;
 
     document.title = `Light Itch - ${state.channel}`;
@@ -98,12 +101,11 @@
 
     if (!socket) return;
     if (!state.playerSource) return;
+    if (!state.lastChannel) return
 
-    if (!state.hiddenChat && state.lastChannel)
-      socket.send(`JOIN #${state.lastChannel}`);
-
-    if (state.hiddenChat && state.lastChannel)
-      socket.send(`PART #${state.lastChannel}`);
+    const action = state.hiddenChat ? "PART" : "JOIN";
+    const command = `${action} #${state.lastChannel}`;
+    socket.send(command);
   };
 </script>
 
