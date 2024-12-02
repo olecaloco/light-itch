@@ -126,7 +126,8 @@
   .container {
     display: flex;
     color: #fff;
-    flex: 1 1 0;
+    flex: 1 1 0%;
+    overflow: hidden;
   }
 
   @media screen and (max-width: 960px) {

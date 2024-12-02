@@ -25,22 +25,18 @@
   #chat {
     position: relative;
     flex: 0 0 340px;
-    padding: 15px;
     max-width: 340px;
     width: 100%;
-    height: 100%;
     border-left: 1px solid rgba(255, 255, 255, 0.05);
     overflow-y: hidden;
   }
 
   ul {
-    display: flex;
-    flex-direction: column;
     margin-top: 0;
     margin-bottom: 0;
-    padding-left: 0;
+    padding: 15px;
     width: 100%;
-    height: calc(100% - 17px);
+    height: 100%;
     list-style: none;
     overflow-y: hidden;
   }
@@ -69,10 +65,10 @@
       flex: 1 1 0;
       max-width: 100%;
       border-left: 0;
-      padding: 8px;
     }
 
     #chat ul {
+      padding: 8px;
       height: 100%;
     }
   }
